@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Authentication System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .welcome {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginPage" class="page active">
+            <h1>🔐 Login</h1>
+            <p>Enter your credentials</p>
+            <div id="loginMsg" class="message"></div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="loginUser">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPass">
+            </div>
+            <button onclick="login()">Login</button>
+            <div class="link">
+                Don't have an account? <a onclick="goToPage('register')">Register</a>
+            </div>
+        </div>
+        <div id="registerPage" class="page">
+            <h1>📝 Register</h1>
+            <p>Create new account</p>
+            <div id="registerMsg" class="message"></div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="regUser">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="regEmail">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="regPass">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="regConfirm">
+            </div>
+            <button onclick="register()">Register</button>
+            <div class="link">
+                Have an account? <a onclick="goToPage('login')">Login</a>
+            </div>
+        </div>
+        <div id="dashboardPage" class="page">
+            <h1>🔒 Dashboard</h1>
+            <p>Secured Page</p>
+            <div class="welcome" id="welcomeMsg"></div>
+            <div class="user-info">
+                <div class="info-row">
+                    <span class="info-label">👤 Username:</span>
+                    <span id="dashUser"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📧 Email:</span>
+                    <span id="dashEmail"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📅 Created:</span>
+                    <span id="dashCreated"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">🕒 Last Login:</span>
+                    <span id="dashLogin"></span>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="goToPage('change')">Change Password</button>
+            <button class="btn-danger" onclick="logout()">Logout</button>
+        </div>
+        <div id="changePage" class="page">
+            <h1>🔑 Change Password</h1>
+            <p>Update your password</p>
+            <div id="changeMsg" class="message"></div>
+            <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" id="currentPass">
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="newPass">
+            </div>
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" id="confirmPass">
+            </div>
+            <button onclick="changePassword()">Update</button>
+            <button class="btn-secondary" onclick="goToPage('dashboard')">Back</button>
+        </div>
+    </div>
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = localStorage.getItem('currentUser') || null;
+        function hash(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) {
+                h = (h << 5) - h + str.charCodeAt(i);
+                h = h & h;
+            }
+            return h.toString();
+        }
+        function showMsg(id, text, type) {
+            const msg = document.getElementById(id);
+            msg.textContent = text;
+            msg.className = 'message show ' + type;
+            setTimeout(() => msg.className = 'message', 3000);
+        }
+        function goToPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            if (page === 'dashboard' && !currentUser) {
+                goToPage('login');
+                showMsg('loginMsg', 'Please login first', 'error');
+                return;
+            }
+            if (page === 'dashboard') loadDashboard();
+            document.getElementById(page + 'Page').classList.add('active');
+        }
+        function register() {
+            const user = document.getElementById('regUser').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regConfirm').value;
+            if (!user || !email || !pass || !confirm) {
+                showMsg('registerMsg', 'All fields required', 'error');
+                return;
+            }
+            if (users[user]) {
+                showMsg('registerMsg', 'Username exists', 'error');
+                return;
+            }
+            if (pass.length < 6) {
+                showMsg('registerMsg', 'Password must be 6+ characters', 'error');
+                return;
+            }
+            if (pass !== confirm) {
+                showMsg('registerMsg', 'Passwords do not match', 'error');
+                return;
+            }
+            users[user] = {
+                email: email,
+                password: hash(pass),
+                created: new Date().toLocaleString(),
+                lastLogin: null
+            };
+            localStorage.setItem('users', JSON.stringify(users));
+            showMsg('registerMsg', 'Registration successful!', 'success');
+            setTimeout(() => {
+                document.getElementById('regUser').value = '';
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPass').value = '';
+                document.getElementById('regConfirm').value = '';
+                goToPage('login');
+            }, 1500);
+        }
+        function login() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            if (!user || !pass) {
+                showMsg('loginMsg', 'Enter username and password', 'error');
+                return;
+            }
+            if (!users[user]) {
+                showMsg('loginMsg', 'Username not found', 'error');
+                return;
+            }
+            if (users[user].password !== hash(pass)) {
+                showMsg('loginMsg', 'Wrong password', 'error');
+                return;
+            }
+            users[user].lastLogin = new Date().toLocaleString();
+            localStorage.setItem('users', JSON.stringify(users));
+            currentUser = user;
+            localStorage.setItem('currentUser', currentUser);
+            showMsg('loginMsg', 'Login successful!', 'success');
+            setTimeout(() => {
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+                goToPage('dashboard');
+            }, 1000);
+        }
+        function loadDashboard() {
+            const user = users[currentUser];
+            document.getElementById('welcomeMsg').textContent = 'Welcome, ' + currentUser + '! 👋';
+            document.getElementById('dashUser').textContent = currentUser;
+            document.getElementById('dashEmail').textContent = user.email;
+            document.getElementById('dashCreated').textContent = user.created;
+            document.getElementById('dashLogin').textContent = user.lastLogin;
+        }
+        function changePassword() {
+            const current = document.getElementById('currentPass').value;
+            const newPass = document.getElementById('newPass').value;
+            const confirm = document.getElementById('confirmPass').value;
+            if (!current || !newPass || !confirm) {
+                showMsg('changeMsg', 'All fields required', 'error');
+                return;
+            }
+            if (users[currentUser].password !== hash(current)) {
+                showMsg('changeMsg', 'Current password wrong', 'error');
+                return;
+            }
+            if (newPass.length < 6) {
+                showMsg('changeMsg', 'Password must be 6+ characters', 'error');
+                return;
+            }
+            if (newPass !== confirm) {
+                showMsg('changeMsg', 'Passwords do not match', 'error');
+                return;
+            }
+            users[currentUser].password = hash(newPass);
+            localStorage.setItem('users', JSON.stringify(users));
+            showMsg('changeMsg', 'Password changed!', 'success');
+            setTimeout(() => {
+                document.getElementById('currentPass').value = '';
+                document.getElementById('newPass').value = '';
+                document.getElementById('confirmPass').value = '';
+                goToPage('dashboard');
+            }, 1500);
+        }
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            goToPage('login');
+            showMsg('loginMsg', 'Logged out', 'success');
+        }
+        if (currentUser && users[currentUser]) {
+            goToPage('dashboard');
+        }
+    </script>
+</body>
+</html>
