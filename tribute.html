@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS Dhoni Tribute</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #000;
+            color: #fff;
+        }
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23001a33" width="1200" height="800"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        .hero-content p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #ccc;
+            margin-bottom: 3rem;
+        }
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .play-button:hover {
+            transform: scale(1.1);
+            background-color: rgba(255,255,255,0.1);
+        }
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid #fff;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 5px;
+        }
+        .content-section {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .quote-container {
+            flex: 1;
+            padding: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+        .quote-text {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            color: #333;
+            max-width: 400px;
+            font-style: italic;
+            text-align: center;
+        }
+        .image-container {
+            flex: 1;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800"><rect fill="%23d4d4d4" width="600" height="800"/><text x="50%25" y="50%25" font-size="24" fill="%23666" text-anchor="middle" dominant-baseline="middle">MS DHONI</text></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        .biography-section {
+            background-color: #000;
+            padding: 5rem 3rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .biography-section h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .biography-content {
+            max-width: 800px;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #ddd;
+            text-align: justify;
+        }
+        .divider {
+            width: 300px;
+            height: 1px;
+            background-color: #444;
+            margin: 3rem auto;
+        }
+        .footer {
+            background-color: #000;
+            padding: 2rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+        .footer a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 968px) {
+            .content-section {
+                flex-direction: column;
+            }
+            .image-container {
+                height: 50vh;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .quote-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>MS Dhoni</h1>
+            <p>1981 - Present</p>
+            <div class="play-button"></div>
+        </div>
+    </section>
+    <section class="content-section">
+        <div class="quote-container">
+            <p class="quote-text">
+                "I never allow myself to be pressured. Pressure comes from being unprepared."
+            </p>
+        </div>
+        <div class="image-container"></div>
+    </section>
+    <section class="biography-section">
+        <h2>Biography</h2>
+        <div class="biography-content">
+            <p>
+                Mahendra Singh Dhoni, popularly known as "Captain Cool" and fondly known as "Thala" in south, is one of the greatest cricket captains and finishers the world has ever seen. Born on July 7, 1981, in Ranchi, Jharkhand, Dhoni rose from humble beginnings to become one of India's most celebrated sports icons.
+            </p>
+            <br>
+            <p>
+                Dhoni made his international debut in 2004 and quickly became known for his aggressive batting style, lightning-fast wicket-keeping, and exceptional leadership qualities. Under his captaincy, India achieved unprecedented success, winning the 2007 ICC World Twenty20 which made a history of winning after 18 years, the 2011 ICC Cricket World Cup, and the 2013 ICC Champions Trophy, making him the only captain to win all three major ICC trophies.
+            </p>
+            <br>
+            <p>
+                Known for his calm demeanor under pressure, innovative tactics, and ability to finish matches in dramatic fashion, Dhoni revolutionized Indian cricket. His helicopter shot became iconic, and his match-winning six in the 2011 World Cup final remains one of the most memorable moments in cricket history. Beyond his achievements, Dhoni's humility, dedication, and never-give-up attitude have inspired millions around the world.
+            </p>
+        </div>
+        <div class="divider"></div>
+    </section>
+    <footer class="footer">
+        <p>Made with ❤️ by <a href="#">Cricket Fan</a></p>
+    </footer>
+</body>
+</html>
