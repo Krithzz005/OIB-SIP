@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #5e8ccd 0%, #7ba5dd 100%);
+        }
+        .calculator {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 420px;
+        }
+        .display-container {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .expression {
+            color: #6ba3d8;
+            font-size: 20px;
+            min-height: 30px;
+            word-wrap: break-word;
+            text-align: left;
+        }
+        .result {
+            color: #1e3a5f;
+            font-size: 52px;
+            font-weight: 600;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        button {
+            height: 70px;
+            font-size: 22px;
+            font-weight: 500;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #e8f4f8;
+            color: #2c3e50;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .btn-function {
+            background: #bbdefb;
+            color: #1e3a5f;
+            font-size: 18px;
+        }
+        .btn-function:hover {
+            background: #90caf9;
+        }
+        .btn-number {
+            background: #e3f2fd;
+            color: #1e3a5f;
+            font-weight: 600;
+            font-size: 26px;
+        }
+        .btn-number:hover {
+            background: #bbdefb;
+        }
+        .btn-operator {
+            background: #90caf9;
+            color: #ffffff;
+            font-size: 28px;
+        }
+        .btn-operator:hover {
+            background: #64b5f6;
+        }
+        .btn-enter {
+            background: #5e92ce;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .btn-enter:hover {
+            background: #4a7ab8;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display-container">
+            <div class="expression" id="expression"></div>
+            <div class="result" id="result">0</div>
+        </div>
+        <div class="buttons">
+            <button class="btn-function" onclick="insertChar('(')">(</button>
+            <button class="btn-function" onclick="insertChar(')')">)</button>
+            <button class="btn-function" onclick="insertAns()">ans</button>
+            <button class="btn-function" onclick="deleteChar()">del</button>
+            <button class="btn-function" onclick="clearDisplay()">clear</button>
+            <button class="btn-number" onclick="insertChar('7')">7</button>
+            <button class="btn-number" onclick="insertChar('8')">8</button>
+            <button class="btn-number" onclick="insertChar('9')">9</button>
+            <button class="btn-operator" onclick="insertChar('%')">%</button>
+            <button class="btn-operator" onclick="calculateSquareRoot()">√</button>
+            <button class="btn-number" onclick="insertChar('4')">4</button>
+            <button class="btn-number" onclick="insertChar('5')">5</button>
+            <button class="btn-number" onclick="insertChar('6')">6</button>
+            <button class="btn-operator" onclick="insertChar('*')">×</button>
+            <button class="btn-operator" onclick="insertChar('/')">÷</button>
+            <button class="btn-number" onclick="insertChar('1')">1</button>
+            <button class="btn-number" onclick="insertChar('2')">2</button>
+            <button class="btn-number" onclick="insertChar('3')">3</button>
+            <button class="btn-operator" onclick="insertChar('+')">+</button>
+            <button class="btn-operator" onclick="insertChar('-')">−</button>
+            <button class="btn-number" onclick="insertChar('.')">.</button>
+            <button class="btn-number" onclick="insertChar('0')">0</button>
+            <button class="btn-operator" onclick="toggleSign()">±</button>
+            <button class="btn-enter" onclick="calculate()">enter</button>
+        </div>
+    </div>
+    <script>
+        let currentExpression = '';
+        let currentResult = '0';
+        let lastAnswer = '0';
+        let shouldResetDisplay = false;
+        const expressionDisplay = document.getElementById('expression');
+        const resultDisplay = document.getElementById('result');
+        function updateDisplay() {
+            expressionDisplay.textContent = currentExpression;
+            resultDisplay.textContent = currentResult;
+        }
+        function insertChar(char) {
+            if (shouldResetDisplay) {
+                currentExpression = '';
+                shouldResetDisplay = false;
+            }
+            currentExpression += char;
+            updateDisplay();
+        }
+        function clearDisplay() {
+            currentExpression = '';
+            currentResult = '0';
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+        function deleteChar() {
+            if (currentExpression.length > 0) {
+                currentExpression = currentExpression.slice(0, -1);
+                updateDisplay();
+            }
+        }
+        function insertAns() {
+            if (shouldResetDisplay) {
+                currentExpression = '';
+                shouldResetDisplay = false;
+            }
+            currentExpression += lastAnswer;
+            updateDisplay();
+        }
+        function toggleSign() {
+            if (currentResult !== '0' && currentResult !== 'Error') {
+                if (currentResult.charAt(0) === '-') {
+                    currentResult = currentResult.substring(1);
+                } else {
+                    currentResult = '-' + currentResult;
+                }
+                currentExpression = currentResult;
+                updateDisplay();
+            }
+        }
+        function calculateSquareRoot() {
+            if (currentResult !== '0' && currentResult !== 'Error') {
+                try {
+                    const num = parseFloat(currentResult);
+                    if (num < 0) {
+                        currentResult = 'Error';
+                    } else {
+                        const result = Math.sqrt(num);
+                        currentResult = formatResult(result);
+                        lastAnswer = currentResult;
+                    }
+                    currentExpression = '';
+                    shouldResetDisplay = true;
+                    updateDisplay();
+                } catch (error) {
+                    currentResult = 'Error';
+                    updateDisplay();
+                }
+            }
+        }
+        function formatResult(num) {
+            if (isNaN(num) || !isFinite(num)) {
+                return 'Error';
+            }
+            if (Number.isInteger(num)) {
+                return num.toString();
+            } else {
+                return parseFloat(num.toFixed(10)).toString();
+            }
+        }
+        function calculate() {
+            if (currentExpression === '') return;
+            try {
+                let expression = currentExpression;
+                expression = expression.replace(/×/g, '*');
+                expression = expression.replace(/÷/g, '/');
+                expression = expression.replace(/−/g, '-');
+                const result = eval(expression);
+                if (result === undefined || isNaN(result) || !isFinite(result)) {
+                    currentResult = 'Error';
+                } else {
+                    currentResult = formatResult(result);
+                    lastAnswer = currentResult;
+                }
+                shouldResetDisplay = true;
+                updateDisplay();
+            } catch (error) {
+                currentResult = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (key >= '0' && key <= '9') {
+                insertChar(key);
+            } else if (key === '.') {
+                insertChar('.');
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                insertChar(key);
+            } else if (key === '(' || key === ')') {
+                insertChar(key);
+            } else if (key === 'Enter') {
+                event.preventDefault();
+                calculate();
+            } else if (key === 'Escape') {
+                clearDisplay();
+            } else if (key === 'Backspace') {
+                event.preventDefault();
+                deleteChar();
+            } else if (key === '%') {
+                insertChar('%');
+            }
+        });
+        updateDisplay();
+    </script>
+</body>
+</html>
